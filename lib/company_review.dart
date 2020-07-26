@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:first_app/Database.dart';
+import 'package:first_app/Company.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-
+import 'Company.dart';
 void main() {
   runApp(MyApp());
 }
@@ -82,7 +82,7 @@ class _MyOtherPageState extends State<MyOtherPage> {
             }
             return Column(
               children: <Widget>[
-                Text(CompanyInfo['companyName']),
+                for(int i=0; i< )
                 // Text() TODO : Showing products and reviews db
               ],
             );

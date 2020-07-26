@@ -21,9 +21,9 @@ class Company {
   }
 
   factory Company.fromJson(Map<String, dynamic> json) => Company(
-        companyName: json["Company Name"],
-        companyProducts: json["Products"],
-        companyReviews: json["Hyram's opinion"],
+        companyName: json["Company Name"] as String,
+        companyProducts: json["Products"] as List,
+        companyReviews: json["Hyram's opinion"] as List,
       );
   // @override
   // String toString() {
@@ -68,10 +68,26 @@ class DBProvider {
 
   newCompany(newCompany) async {
     final db = await database;
-
-    var res = await db.rawInsert('''
-      INSERT INTO company(companyName) VALUES (?)
-    ''', newCompany.companyName);
+    List<String> names = [
+      'The Ordinary',
+      'Aveeno',
+      'Simple',
+      'St. Ives',
+      'Kate Somerville',
+      'Fresh',
+      'I Dew Care',
+      'Clean Beauty',
+      'Clean & Clear',
+      "Burt's Bees"
+    ];
+    names.sort();
+    var res, cName;
+    for (int i = 0; i < names.length; i++) {
+      cName = names[i];
+      res = await db.rawInsert('''
+            INSERT INTO company(companyName) VALUES (?)
+          ''', cName);
+    }
 
     return res;
   }
@@ -109,17 +125,13 @@ class DBProvider {
 
     // get single row
     List<String> col1 = [Company.columnProd]; //one for product info
-    List<String>  col2 = [Company.columnRev]; //one for review info
+    List<String> col2 = [Company.columnRev]; //one for review info
     String whereString = '${Company.columnId} = ?';
     List<dynamic> whereArguments = [companyId];
     List<Map> res3 = await db.query("Products",
-        columns: col1,
-        where: whereString,
-        whereArgs: whereArguments);
+        columns: col1, where: whereString, whereArgs: whereArguments);
     List<Map> res4 = await db.query("Reviews",
-        columns: col2,
-        where: whereString,
-        whereArgs: whereArguments);
+        columns: col2, where: whereString, whereArgs: whereArguments);
 
     // print the results
     res3.forEach((row) => print(row)); //print products
